@@ -19,14 +19,14 @@ Install
 Install is easy as all docker images
 
 ```sh
-docker pull writl/pyload:0.4.9
+docker pull malfario/pyload:0.4.9
 ```
 
 Running
 ----
 
 ```sh
-docker run -d -P writl/pyload:0.4.9
+docker run -d --name pyload -p 8000:8000 malfario/pyload:0.4.9
 ```
 
 Configuration
@@ -34,18 +34,45 @@ Configuration
 You can link your Downloads to your host very easy like that:
 
 ```sh
-docker run -d -v <host directoy>:/opt/pyload/Downloads -P writl/pyload:0.4.9
+docker run -d \
+  --name pyload \
+  -p 8000:8000 \
+  -v <host directory>:/opt/pyload/Downloads \
+  malfario/pyload:0.4.9
 ```
 Notice to replace ```<host directory>``` with your directory path on the host. So if you want to store your Downloads in ```/tmp/Downloads``` then your command would look like this:
 
 ```sh
-docker run -d -v /tmp/Downloads:/opt/pyload/Downloads -P writl/pyload:0.4.9
+docker run -d \
+  --name pyload \
+  -p 8000:8000 \
+  -v /tmp/Downloads:/opt/pyload/Downloads \
+  malfario/pyload:0.4.9
 ```
+
+You may change the permissions of the download folder by setting the environment variables `PYLOAD_UID` and `PYLOAD_GID` with the appropiate user and group id numbers, eg:
+
+```sh
+docker run -d \
+  --name pyload \
+  -p 8000:8000 \
+  -v /tmp/Downloads:/opt/pyload/Downloads \
+  -e PYLOAD_UID=1000 \
+  -e PYLOAD_GID=1000 \
+  malfario/pyload:0.4.9
+```
+
 If you want to have your configuration persistent you have to link the configuration directory outside of the container. This can happen like this:
 
 ```sh
-docker run -d -v <host directoy>:/opt/pyload/pyload-config -P writl/pyload:0.4.9
+docker run -d \
+  --name pyload \
+  -p 8000:8000 \
+  -v <host directory>:/opt/pyload/Downloads \
+  -v <host directory>:/opt/pyload/pyload-config \
+  malfario/pyload:0.4.9
 ```
+
 Finally
 ----
 After the docker has created you can login via the webinterface with:
