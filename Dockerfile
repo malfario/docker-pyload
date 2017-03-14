@@ -25,9 +25,11 @@ RUN apt-get update && apt-get install -y python \
         && apt-get clean \
         && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN git clone https://github.com/pyload/pyload.git /opt/pyload \
+RUN git clone --branch stable https://github.com/pyload/pyload.git /opt/pyload \
         && cd /opt/pyload \
         && echo "/opt/pyload/pyload-config" > /opt/pyload/module/config/configdir
+
+RUN useradd -U -r -s /bin/false pyload
 
 ADD pyload-config/ /tmp/pyload-config
 ADD run.sh /run.sh
